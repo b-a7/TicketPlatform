@@ -21,12 +21,21 @@ public:
     Event(Artist* artist, Location* location, const std::string& date, double price,
           bool isVIP, int available_tickets);
 
-    std::string getDate() const;
+    const std::string getDate() const;
+    const std::string getLocation() const;
+
     double getPrice() const;
     bool getVIPStatus() const;
     int getAvailableTickets() const;
     std::string getEventName() const;
+
+    // set
+    void setLocation(const std::string new_location);
+
+    static std::vector<Event*> event_list; // Declare static member here
+
 };
+
 
 
 

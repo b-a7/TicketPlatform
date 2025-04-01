@@ -12,8 +12,6 @@ int main()
 
     user1.displayInfo();
 
-    main
-
 
     return 0;
 }

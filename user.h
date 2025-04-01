@@ -32,8 +32,8 @@ public:
 
     const std::string getPassword();
 
-    // gets type of user, redefined within each sub class
-    virtual std::string getType() const;        // returns to user what type of USER they are
+/*    // gets type of user, redefined within each sub class
+    virtual std::string getType() const; */       // returns to user what type of USER they are
 
     // receives reference to user object and adds this to current list
     void addUser(User& user);
@@ -45,7 +45,7 @@ public:
     static void cleanup();
 
     static int getNumUsers();
-]
+
 };
 
 

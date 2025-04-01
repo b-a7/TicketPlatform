@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Location :: Location(const string location_name, const string address, int capacity)
+Location::Location(const string location_name, const string address, int capacity)
 {
     this->location_name = location_name;
     this->address = address;
@@ -25,7 +25,7 @@ bool Location::is_available(const string &date) const
     return true;
 }
 
-void Location :: ReserveEvent(Event* event)
+void Location::ReserveEvent(Event* event)
 {
     if (is_available(event->getDate()))
     {
@@ -39,22 +39,22 @@ void Location :: ReserveEvent(Event* event)
     }
 }
 
-string Location :: getLocationName() const
+string Location::getLocationName() const
 {
     return location_name;
 }
 
-string Location :: getAddress() const
+string Location::getAddress() const
 {
     return address;
 }
 
-int Location :: getCapacity() const
+int Location::getCapacity() const
 {
     return capacity;
 }
 
-void Location :: DisplayReservedEvents_array()
+void Location::DisplayReservedEvents_array()
 {
     cout << "Events in " << location_name << ":" << endl;
 
@@ -71,4 +71,3 @@ void Location :: DisplayReservedEvents_array()
         }
     }
 }
-

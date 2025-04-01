@@ -3,7 +3,10 @@
 #include "attendee.h"
 #include "VIP_Attendee.h"
 
-#include <iostream>;
+#include <iostream>
+
+class VIP_attendee;
+
 using namespace std;
 
 Administrator::Administrator(const string& username, const string& password) {
@@ -20,7 +23,7 @@ void Administrator::createAdmin(const string& username, const string& password) 
 
     User* admin = new Administrator(username, password);
 
-    addUser(admin);      // add user to end of user_list
+    addUser(*admin);      // add user to end of user_list
 
     cout << "User of type ADMINISTRATOR created" << endl;
 
@@ -91,11 +94,16 @@ void Administrator::create_user() {
             break;
         }
     }
+}
 
 
 // modify will be a clear, and then rewrite for a specific user
-void modifyUser(User* user);
+void modifyUser(User* user) {
+    return;
+
+}
 
 // delete user provided username
-void deleteUser(User* user);
-
+void deleteUser(User* user) {
+    return;
+}

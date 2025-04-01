@@ -72,7 +72,8 @@ OBJECTS       = SecondaryMarket.o \
 		main.o \
 		ticket.o \
 		user.o
-DIST          = /Qt/6.8.2/macos/mkspecs/features/spec_pre.prf \
+DIST          = ../../README.md \
+		/Qt/6.8.2/macos/mkspecs/features/spec_pre.prf \
 		/Qt/6.8.2/macos/mkspecs/features/device_config.prf \
 		/Qt/6.8.2/macos/mkspecs/common/unix.conf \
 		/Qt/6.8.2/macos/mkspecs/common/mac.conf \
@@ -407,6 +408,7 @@ DIST          = /Qt/6.8.2/macos/mkspecs/features/spec_pre.prf \
 		/Qt/6.8.2/macos/mkspecs/features/qt_config.prf \
 		/Qt/6.8.2/macos/mkspecs/macx-clang/qmake.conf \
 		/Qt/6.8.2/macos/mkspecs/features/spec_post.prf \
+		../../.qmake.stash \
 		/Qt/6.8.2/macos/mkspecs/features/exclusive_builds.prf \
 		/Qt/6.8.2/macos/mkspecs/features/mac/sdk.prf \
 		/Qt/6.8.2/macos/mkspecs/features/toolchain.prf \
@@ -435,6 +437,7 @@ DIST          = /Qt/6.8.2/macos/mkspecs/features/spec_pre.prf \
 		attendee.h \
 		event.h \
 		location.h \
+		platform.h \
 		ticket.h \
 		user.h ../../SecondaryMarket.cpp \
 		../../VIP_Attendee.cpp \
@@ -454,7 +457,7 @@ TARGET        = TicketPlatform
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 15.2
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Applications/Xcode.app/Contents/Developer
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/bill/TicketPlatform/build/Desktop-Debug/.qmake.stash
 EXPORT_VALID_ARCHS = x86_64 arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -804,6 +807,7 @@ Makefile: ../../TicketPlatform.pro ../../../Qt/6.8.2/macos/mkspecs/features/spec
 		../../../Qt/6.8.2/macos/mkspecs/features/qt_config.prf \
 		../../../Qt/6.8.2/macos/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/6.8.2/macos/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/6.8.2/macos/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/6.8.2/macos/mkspecs/features/mac/sdk.prf \
 		../../../Qt/6.8.2/macos/mkspecs/features/toolchain.prf \
@@ -1162,6 +1166,7 @@ Makefile: ../../TicketPlatform.pro ../../../Qt/6.8.2/macos/mkspecs/features/spec
 ../../../Qt/6.8.2/macos/mkspecs/features/qt_config.prf:
 ../../../Qt/6.8.2/macos/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/6.8.2/macos/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/6.8.2/macos/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/6.8.2/macos/mkspecs/features/mac/sdk.prf:
 ../../../Qt/6.8.2/macos/mkspecs/features/toolchain.prf:
@@ -1207,6 +1212,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) $(TARGET) 
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -1231,14 +1237,23 @@ compiler_clean:
 
 ####### Compile
 
-SecondaryMarket.o: ../../SecondaryMarket.cpp ../../SecondaryMarket.h
+SecondaryMarket.o: ../../SecondaryMarket.cpp ../../SecondaryMarket.h \
+		../../ticket.h \
+		../../VIP_attendee.h \
+		../../user.h \
+		../../attendee.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SecondaryMarket.o ../../SecondaryMarket.cpp
 
-VIP_Attendee.o: ../../VIP_Attendee.cpp ../../VIP_Attendee.h
+VIP_Attendee.o: ../../VIP_Attendee.cpp ../../VIP_Attendee.h \
+		../../user.h \
+		../../attendee.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o VIP_Attendee.o ../../VIP_Attendee.cpp
 
 administrator.o: ../../administrator.cpp ../../administrator.h \
-		../../user.h
+		../../user.h \
+		../../artist.h \
+		../../attendee.h \
+		../../VIP_Attendee.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o administrator.o ../../administrator.cpp
 
 artist.o: ../../artist.cpp ../../artist.h \
@@ -1249,17 +1264,17 @@ attendee.o: ../../attendee.cpp ../../attendee.h \
 		../../user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attendee.o ../../attendee.cpp
 
-event.o: ../../event.cpp ../../event.h \
-		../../artist.h \
-		../../user.h
+event.o: ../../event.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o event.o ../../event.cpp
 
-location.o: ../../location.cpp ../../location.h
+location.o: ../../location.cpp ../../location.h \
+		../../user.h \
+		../../attendee.h \
+		../../event.h \
+		../../artist.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o location.o ../../location.cpp
 
-main.o: ../../main.cpp ../../event.h \
-		../../artist.h \
-		../../user.h
+main.o: ../../main.cpp ../../user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 ticket.o: ../../ticket.cpp ../../ticket.h

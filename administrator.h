@@ -12,7 +12,7 @@ public:
     // constructor
     Administrator(const std::string& username, const std::string& password);
 
-    string getType() const override {return "Artist";}
+    //string getType() const override {return "Artist";}
 
     // create user
     void create_user();
@@ -23,7 +23,7 @@ public:
     // delete user provided username
     void deleteUser(User* user);
 
-    void createAdmin(const string& username, const string& password);
+    void createAdmin(const std::string& username, const std::string& password);
 
 
 };

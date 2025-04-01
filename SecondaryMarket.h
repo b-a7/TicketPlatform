@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "ticket.h"
-#include "VIP_attendee.h"
+#include "VIP_Attendee.h"
 
 class Ticket;
 
