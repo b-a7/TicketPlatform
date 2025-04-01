@@ -24,14 +24,18 @@ public:
            const std::string& name, const std::string& style,
            const std::string& description);
 
-    string getType() const override {return "Artist";}
+    //std::string getType() const override {return "Artist";}
 
     void addEvent(Event& event);
+
+    void deleteEvent(Event& event);
+
+    void displayInfo();
 
     // Event management -- assumes event ID or some way of identifying events
     void createEvent(Event* event);
     void modifyEvent(Event* event);
-    void deleteEvent(Event* event);
+
 
     // Artist update to their own profile
     void updateDescription(const std::string& new_description);
@@ -39,7 +43,7 @@ public:
 
     //void displayInfo() const;
 
-    const std::string Artist::createArtist(const std::string& username, const std::string& password,
+    const std::string createArtist(const std::string& username, const std::string& password,
                                       const std::string& name, const std::string& style,
                                       const std::string& description);
     const std::string defineArtistName();

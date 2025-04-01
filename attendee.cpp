@@ -4,7 +4,7 @@ using namespace std;
 
 
 Attendee::Attendee(const string& username, const string& password,
-             const string& ID, double initial_funds = 0.0) {
+             const string& ID, double initial_funds) {
 
     this->username = username;
     this->password = password;
@@ -22,7 +22,7 @@ void Attendee::addFunds(double amount) {
     }
 }
 
-void Attendee::viewTicekts() {
+void Attendee::viewTickets() {
 
     // display vector of available tickets
     return;
@@ -47,9 +47,9 @@ double Attendee::getWallet() const {
 void Attendee::createAttendee(const string& username, const string& password,
                               const string& ID) {
 
-    User* Attendee = new Attendee(username, password, ID);
+    User* attendee = new Attendee(username, password, ID);
 
-    addUser(Attendee);
+    addUser(*attendee);
 
     cout << "User of type Attendee created" << endl;
 
@@ -57,7 +57,7 @@ void Attendee::createAttendee(const string& username, const string& password,
 
 const string Attendee::createAttendeeID() {
 
-    string ID = tostring(getNumUsers());
+    string ID = to_string(getNumUsers());
 
     cout << "Test ID: " << ID << endl;
 

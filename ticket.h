@@ -21,6 +21,6 @@ public:
     // Setters
     void setOwner(Attendee* newOwner);
     void setPrice(double newPrice);
-
+};
 
 #endif // TICKET_H

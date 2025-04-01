@@ -19,7 +19,8 @@ public:
     VIP_attendee(const std::string& username, const std::string& passsword,
                  const std::string& VIP_ID, double initial_funds = 0.0);
 
-    VIP_attendee();
+
+    ~VIP_attendee();
 
     // VIP extra privelages -- buy/sell completed in SECONDARY market
     void buyVIPticket();
@@ -28,6 +29,8 @@ public:
 
     void createVIPAttendee(const std::string& username, const std::string& passsword,
                            const std::string& VIP_ID );
+
+    const std::string createVIPID();
 
 };
 

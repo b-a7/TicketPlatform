@@ -6,22 +6,32 @@ using namespace std;
 vector<Ticket*> VIP_attendee::SecondaryMarket;
 
 
-VIP_attendee::VIP_attendee(const std::string& username, const std::string& passsword,
-             const std::string& VIP_ID, double initial_funds = 0.0);
-
-VIP_attendee::VIP_attendee();
-
-void VIP_attendee::buyVIPticket();
-
-void VIP_attendee::sellVIPticket();
+VIP_attendee::VIP_attendee(const std::string& username, const std::string& password,
+                           const std::string& VIP_ID, double initial_funds)
+    : Attendee(username, password, VIP_ID)
+{
+    this->ID = VIP_ID;
+}
 
 
-void VIP_attendee::createVIPAttendee(const std::string& username, const std::string& passsword,
-                                     const std::string& VIP_ID ) {
+VIP_attendee::~VIP_attendee() {
 
-    User* VIP_attendee = new VIP_attendee(username, password, VIP_ID);
+}
+void VIP_attendee::buyVIPticket() {
+    return;
+}
 
-    addUser(VIP_attendee);
+void VIP_attendee::sellVIPticket() {
+    return;
+}
+
+
+void VIP_attendee::createVIPAttendee(const string& username, const string& password,
+                                     const string& VIP_ID ) {
+
+    User* VIP_attendee1 = new VIP_attendee(username, password, VIP_ID);
+
+    addUser(*VIP_attendee1);
 
     cout << "User of type VIP Attendee created" << endl;
 

@@ -11,7 +11,7 @@ User::User(const string& username, const string& password) {
     this->username = username;
     this->password = password;
 
-    addUser(this);      // adding new user immediately to user_list
+    addUser(*this);      // adding new user immediately to user_list
 }
 
 // Copy constructor
@@ -20,15 +20,15 @@ User::User(const User& other) {
     this->username = other.username;
     this->password = other.password;
 
-    addUser(this);
+    addUser(*this);
 }
 
 User::~User() {
 }
 
-const string User::getType() {
-    return "User";
-}
+// const string User::getType() {
+//     return "User";
+// }
 
 const string User::getUsername() {
 

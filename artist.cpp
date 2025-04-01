@@ -1,13 +1,17 @@
 #include "artist.h"
+#include "event.h"
+#include "location.h"
 
 using namespace std;
+
+class Event;
 
 vector<Event*> upcoming_events;
 
 // receives reference to user object and adds this to current list
 void Artist::addEvent(Event& event) {
 
-    upcoming_events.push_back(&user);    // need to give address as the vector holds pointers to Users, not objects themselves
+    upcoming_events.push_back(&event);    // need to give address as the vector holds pointers to Events, not objects themselves
 
 }
 
@@ -25,7 +29,7 @@ void Artist::deleteEvent(Event& event) {
     bool found = false;
 
     for (size_t i = 0; i < upcoming_events.size(); i++) {
-        if ((upcoming_events[i].location == find_location) && (upcoming_events[i].date ==  find_date)) {
+        if ((upcoming_events[i]->getLocation() == find_location) && (upcoming_events[i]->getDate() ==  find_date)) {
             upcoming_events.erase(upcoming_events.begin() + i);
             found = true;
             cout << "Event deleted successfully." << endl;
@@ -48,7 +52,7 @@ Artist::Artist(const string& username, const string& password,
       description(description)
 {}
 
-void Artist::displayInfo() const {
+void Artist::displayInfo() {
     cout << "Artist: " << name << endl;
     cout << "Style: " << style << endl;
     cout << "Description: " << description << endl;
@@ -69,7 +73,7 @@ void Artist::createEvent(Event* event) {
 
     // temporary variables
 
-    string date, location;
+    string artist, date, location;
     double ticket_price;
     int isEventVIP_temp;
     bool isEventVIP;
@@ -104,10 +108,12 @@ void Artist::createEvent(Event* event) {
         false;
     }
 
-    Event* event = new Event(artist, location, date, price, isEventVIP, available_tix);
+    // need to pass actual artist ****** FIX
+    Event* event = new Event(artist, location, date, ticket_price, isEventVIP, available_tix);
 
     // need to add event to event_list
-    addEvent(event);
+    addEvent(*event);
+
 
 }
 
@@ -117,9 +123,9 @@ const string Artist::createArtist(const string& username, const string& password
                                   const string& name, const string& style,
                                   const string& description) {
 
-    User* Artist = new Artist(username, password, name, style, description);
+    User* artist = new Artist(username, password, name, style, description);
 
-    addUser(Artist);
+    addUser(*artist);
 
     cout << "User of type ARTIST created" << endl;
 
@@ -163,7 +169,7 @@ const string Artist::defineArtistBio() {
 
 }
 
-void modifyEvent(Event* event) {
+void Artist::modifyEvent(Event* event) {
 
     // can modify: location, date, price, isVIP, available_tickets
 
@@ -177,55 +183,54 @@ void modifyEvent(Event* event) {
     cout << "   5)   Number of available tickets" << endl;
     cout << "Enter selection (1-5): ";
 
+
     switch(option) {
         case 1: {
+        string location;
         cout << "Enter new location of the event: " << endl;
+        getline(cin, location);
+
+        event->setLocation(location);
         }
     }
+
 
     return;
 }
 
-switch(user_type) {
+// get/set location
+// get/set date
+
+// ///////// from header ////////////////////
+// class Event;
+
+// class Artist : public User {
+// private:
+//     std::string name;
+//     std::string style;
+//     std::string description;
+
+//     // List of upcoming events ( vector of Event type )
+//     std::vector<Event*> upcoming_events;
+
+// public:
+//     // Empty constructor
+//     Artist();
+
+//     // Constructor
+//     Artist(const std::string& username, const std::string& password,
+//            const std::string& name, const std::string& style,
+//            const std::string& description);
+
+//     // Event management -- assumes event ID or some way of identifying events
+//     void createEvent(Event* event);
+//     void modifyEvent(Event* event);
 
 
-case 1: {
-    cout << " Is the Attendee VIP? " << endl;
+//     void deleteEvent(Event* event);
 
+//     // Artist update to their own profile
+//     void updateDescription(const std::string& new_description);
 
-
-///////// from header ////////////////////
-class Event;
-
-class Artist : public User {
-private:
-    std::string name;
-    std::string style;
-    std::string description;
-
-    // List of upcoming events ( vector of Event type )
-    std::vector<Event*> upcoming_events;
-
-public:
-    // Empty constructor
-    Artist();
-
-    // Constructor
-    Artist(const std::string& username, const std::string& password,
-           const std::string& name, const std::string& style,
-           const std::string& description);
-
-    // Event management -- assumes event ID or some way of identifying events
-    void createEvent(Event* event);
-    void modifyEvent(Event* event);
-
-
-    void deleteEvent(Event* event);
-
-    // Artist update to their own profile
-    void updateDescription(const std::string& new_description);
-
-    void updateStyle(const std::string new_style);
-
-
-};
+//     void updateStyle(const std::string new_style);
+// };
