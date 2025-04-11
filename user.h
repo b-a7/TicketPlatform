@@ -46,6 +46,8 @@ public:
 
     static int getNumUsers();
 
+    void run();
+
 };
 
 

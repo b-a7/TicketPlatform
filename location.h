@@ -31,8 +31,8 @@ public:
     // method to get location
     std::string getLocationName() const;
 
-    void getAddress() const;
-    void getCapacity() const;
+    std::string getAddress() const;
+    std::string getCapacity() const;
 
     void DisplayReservedEvents_array();
 

@@ -44,7 +44,7 @@ string Event::getEventName() const
     return event_name;
 }
 
-// void Event::setLocation(const string new_location) {
+// void Event::setLocation(const string& new_location) {
 //     this->location = new_location;
 // }
 

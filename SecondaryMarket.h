@@ -20,5 +20,9 @@ public:
 
     // display ticket
     void displayTicket() const;
+
+
 };
+
+
 #endif // SECONDARYMARKET_H

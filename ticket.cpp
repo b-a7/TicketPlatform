@@ -10,18 +10,18 @@ Ticket :: Ticket(Event* event, Attendee* owner, double price)
     this->price = price;
 }
 
-double Ticket :: getPrice() const
+double Ticket::getPrice() const
 {
     return price;
 }
 
-void Ticket :: setOwner(Attendee *newOwner)
+void Ticket::setOwner(Attendee *newOwner)
 {
     this->owner = newOwner;
     cout << "Ticket has a new owner" << endl;
 }
 
-void Ticket :: setPrice(double newPrice)
+void Ticket::setPrice(double newPrice)
 {
     if(newPrice>price)
     {

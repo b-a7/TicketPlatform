@@ -36,11 +36,9 @@ void Artist::deleteEvent(Event& event) {
             break;
         }
     }
-    if (!found) {
-        cout << "No event found with the given location and date (DD/MM/YYYY)" << endl;
-    }
-
+    // **** found condition not being used
 }
+
 
 // using initialiser list instead of 'this->name' format
 Artist::Artist(const string& username, const string& password,
@@ -82,6 +80,7 @@ void Artist::createEvent(Event* event) {
     // need to ask artist for input to fill out for events and store in temporary variables
 
     cout << "Enter event artist: ";
+    getline(cin, artist);       // this is only giving an artist name not the artist object to the event class created
 
     cout << "Enter event location: ";
     getline(cin, location);
@@ -109,11 +108,10 @@ void Artist::createEvent(Event* event) {
     }
 
     // need to pass actual artist ****** FIX
-    Event* event = new Event(artist, location, date, ticket_price, isEventVIP, available_tix);
+    Event* event_temp = new Event(artist, location, date, ticket_price, isEventVIP, available_tix);
 
     // need to add event to event_list
-    addEvent(*event);
-
+    addEvent(*event_temp);
 
 }
 
@@ -186,12 +184,37 @@ void Artist::modifyEvent(Event* event) {
 
     switch(option) {
         case 1: {
-        string location;
+        string new_location;
         cout << "Enter new location of the event: " << endl;
-        getline(cin, location);
+        getline(cin, new_location);
 
-        event->setLocation(location);
+        event->setLocation(new_location);
         }
+
+        case 2: {
+            string new_date;
+            cout << "Enter new date of the event: " << endl;
+
+
+        }
+        case 3: {
+
+            double new_price;
+            cout << "Enter new ticket price: " << endl;
+
+        }
+        case 4: {
+            bool VIP_change;
+            cout << "Is the event now VIP only? " << endl;
+
+        }
+        case 5: {
+            int new_tix_available;
+            cout << "Change number of available tickets to: " << endl;
+            cin >> new_tix_available;
+            // update tix availabel function like set_tix available called on specific event
+        }
+
     }
 
 

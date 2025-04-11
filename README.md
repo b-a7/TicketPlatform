@@ -11,7 +11,6 @@ pointers or if these can just be strings
 
 Administrator:
 
-
 Event:
 
 **    Changes:
