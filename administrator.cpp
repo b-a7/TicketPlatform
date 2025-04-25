@@ -9,6 +9,8 @@ class VIP_attendee;
 
 using namespace std;
 
+Administrator::Administrator() {};
+
 Administrator::Administrator(const string& username, const string& password) {
     this->username = username;
     this->password = password;
@@ -19,18 +21,18 @@ Administrator::Administrator(const string& username, const string& password) {
 
        2) new user added to the end of the users vector
     */
-void Administrator::createAdmin(const string& username, const string& password) {
+void Administrator::createAdmin(const string& username, const string& password, Platform& platform) {
 
     User* admin = new Administrator(username, password);
 
-    addUser(*admin);      // add user to end of user_list
+    platform.addUser(admin);      // add user to end of user_list
 
     cout << "User of type ADMINISTRATOR created" << endl;
 
 }
 
 // create user
-void Administrator::create_user() {
+void Administrator::create_user(Platform& platform) {
 
     string temp_username, temp_password;
     int user_type;
@@ -61,15 +63,22 @@ void Administrator::create_user() {
             if (isVIP == 1) {
                 // VIP attendee
                 string VIP_ID;
-                VIP_ID = createVIPID();
-                createVIPAttendee(username, password, VIP_ID);
+
+                // creating empty VIP_attendee object (temp) to fill in fields for
+                VIP_attendee VIP_attendee_temp;
+
+                VIP_ID = VIP_attendee_temp.createVIPID(platform);
+                VIP_attendee_temp.createVIPAttendee(username, password, VIP_ID, platform);
+                cout << "This worked, password" << endl;
             }
 
             // normal attendeee
             else {
                 string ID;
-                ID = createAttendeeID();
-                createAttendee(username, password, ID);
+                Attendee attendee_temp;
+                ID = attendee_temp.createAttendeeID(platform);
+                attendee_temp.createAttendee(username, password, ID, platform);
+                // or can make freind class and use create attendee normally, or modify the already made attendee object with info given
                  }
             break;
         }
@@ -78,18 +87,26 @@ void Administrator::create_user() {
         case 2: {
             string name, style, description;
 
-            name = defineArtistName();
-            style = defineArtistStyle();
-            description = defineArtistBio();
+            Artist artist1;
 
-            createArtist(username, password, name, style, description);
+            name = artist1.defineArtistName();
+            style = artist1.defineArtistStyle();
+            description = artist1.defineArtistBio();        // -- change to just set this new artist object with given fields instead of create new object
+
+            // use of undeclared 'defineartistname' -- how can this be fixed --> can I use 'friend class'
+            // name = defineArtistName();
+            //style = defineArtistStyle();
+            //description 3= defineArtistBio();
+
+            artist1.createArtist(username, password, name, style, description, platform);
 
             break;
         }
 
             // CASE admin
         case 3: {
-            createAdmin(username, password);
+
+            createAdmin(username, password, platform);
 
             break;
         }
@@ -97,7 +114,7 @@ void Administrator::create_user() {
 }
 
 
-// modify will be a clear, and then rewrite for a specific user
+// modify user can just override specific fields of a user with given info
 void modifyUser(User* user) {
     return;
 

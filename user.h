@@ -1,5 +1,6 @@
 #ifndef USER_H
 #define USER_H
+#include "platform.h"
 
 #include <iostream>
 #include <string>
@@ -32,21 +33,25 @@ public:
 
     const std::string getPassword();
 
-/*    // gets type of user, redefined within each sub class
-    virtual std::string getType() const; */       // returns to user what type of USER they are
-
-    // receives reference to user object and adds this to current list
-    void addUser(User& user);
-
     // virtual for initial display that can be overriden
     virtual void displayInfo() { std::cout << "Username: " << this->username << std::endl;
                                  std::cout << "Password: " << this->password << std::endl; }
 
-    static void cleanup();
 
-    static int getNumUsers();
+    void create_user(const std::string& username, const std::string& password, Platform& platform);
 
-    void run();
+
+        // gets type of user, redefined within each sub class
+    virtual std::string getType() const;       // returns to user what type of USER they are
+
+    // receives reference to user object and adds this to current list
+    // void addUser(User& user);
+
+    // static void cleanup();
+
+    // static int getNumUsers();
+
+    // void run();
 
 };
 

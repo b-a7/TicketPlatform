@@ -1,7 +1,9 @@
 #include "attendee.h"
+#include "platform.h"
 
 using namespace std;
 
+Attendee::Attendee() {}
 
 Attendee::Attendee(const string& username, const string& password,
              const string& ID, double initial_funds) {
@@ -45,19 +47,19 @@ double Attendee::getWallet() const {
 }
 
 void Attendee::createAttendee(const string& username, const string& password,
-                              const string& ID) {
+                              const string& ID, Platform& platform) {
 
     User* attendee = new Attendee(username, password, ID);
 
-    addUser(*attendee);
+    platform.addUser(attendee);
 
     cout << "User of type Attendee created" << endl;
 
 }
 
-const string Attendee::createAttendeeID() {
+const string Attendee::createAttendeeID(Platform& platform) {
 
-    string ID = to_string(getNumUsers());
+    string ID = to_string(platform.getNumUsers());
 
     cout << "Test ID: " << ID << endl;
 

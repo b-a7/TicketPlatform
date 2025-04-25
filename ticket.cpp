@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Ticket :: Ticket(Event* event, Attendee* owner, double price)
+Ticket::Ticket(Event* event, Attendee* owner, double price)
 {
     this->event = event;
     this->owner = owner;
@@ -25,12 +25,12 @@ void Ticket::setPrice(double newPrice)
 {
     if(newPrice>price)
     {
-        price = newPrice;
-        cout <<"The price has changed, now is" << newPrice <<"€"<< endl;
+        this->price = newPrice;
+        cout <<"The price has changed, now is: " << newPrice << "€" << endl;
     }
 
     else
     {
-        cout << "You have to make a bigger offer" << endl;
+        cout << "You have to make the new price greater than the original price." << endl;
     }
 }

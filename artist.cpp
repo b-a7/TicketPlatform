@@ -1,12 +1,15 @@
 #include "artist.h"
 #include "event.h"
 #include "location.h"
+#include "platform.h"
+
+#include <stdexcept>
 
 using namespace std;
 
-class Event;
-
 vector<Event*> upcoming_events;
+
+Artist::Artist() {}
 
 // receives reference to user object and adds this to current list
 void Artist::addEvent(Event& event) {
@@ -26,18 +29,25 @@ void Artist::deleteEvent(Event& event) {
     cout << "What is the date of the event you want to delete? (DD/MM/YYYY) ";
     getline(cin, find_date);
 
-    bool found = false;
+    //bool found = false;
 
     for (size_t i = 0; i < upcoming_events.size(); i++) {
         if ((upcoming_events[i]->getLocation() == find_location) && (upcoming_events[i]->getDate() ==  find_date)) {
             upcoming_events.erase(upcoming_events.begin() + i);
-            found = true;
+            //found = true;
             cout << "Event deleted successfully." << endl;
             break;
         }
+        else {
+            cout << "Event not found! " << endl;
+        }
     }
+
     // **** found condition not being used
 }
+
+// options to delete event by: location, date
+// comparing location name as string to location pointer: inside location pointer there should still be a location name
 
 
 // using initialiser list instead of 'this->name' format
@@ -50,11 +60,11 @@ Artist::Artist(const string& username, const string& password,
       description(description)
 {}
 
-void Artist::displayInfo() {
-    cout << "Artist: " << name << endl;
-    cout << "Style: " << style << endl;
-    cout << "Description: " << description << endl;
-}
+// void Artist::displayInfo() {
+//     cout << "Artist: " << name << endl;
+//     cout << "Style: " << style << endl;
+//     cout << "Description: " << description << endl;
+// }
 
 void Artist::updateDescription(const string& new_description) {
     this->description = new_description;
@@ -64,14 +74,14 @@ void Artist::updateStyle(const string new_style) {
     this->style = new_style;
 }
 
-void Artist::createEvent(Event* event) {
+void Artist::createEvent(Platform& platform) {
 
     // needs to ask user for input, storing in temporary variables, and then fill in Event constructor with this information
         // then the Event constructed has to be added to the end of the event* vector
 
     // temporary variables
 
-    string artist, date, location;
+    string artist_finder, date, location_finder;
     double ticket_price;
     int isEventVIP_temp;
     bool isEventVIP;
@@ -80,14 +90,17 @@ void Artist::createEvent(Event* event) {
     // need to ask artist for input to fill out for events and store in temporary variables
 
     cout << "Enter event artist: ";
-    getline(cin, artist);       // this is only giving an artist name not the artist object to the event class created
+    getline(cin, artist_finder);       // this is only giving an artist name not the artist object to the event class created
+
+    // conditional is like if-else, if artist_finder.empty(), pointer = this, else pointer = pointer from findArtistByName
+    Artist *artist_temp = artist_finder.empty() ? this : platform.findArtistByName(artist_finder);
+    if (!artist_temp) throw std::invalid_argument("Artist not found");
 
     cout << "Enter event location: ";
-    getline(cin, location);
+    getline(cin, location_finder);
 
-    // check location function *****
-
-    //get event details above
+    Location *location = location_finder.empty() ? nullptr : platform.findLocationByName(location_finder);
+    if (!location) throw std::invalid_argument("Location not found");
 
     cout << "Enter event date (format DD/MM/YYYY): ";
     getline(cin, date);
@@ -107,8 +120,11 @@ void Artist::createEvent(Event* event) {
         false;
     }
 
-    // need to pass actual artist ****** FIX
-    Event* event_temp = new Event(artist, location, date, ticket_price, isEventVIP, available_tix);
+    // need to search if artist exists, if not give error
+        // if artist exists in user search, pass object to event constructor below
+
+    // need to pass actual artist ****** FIX -- is it better to pass artist / location pointer or just strings is fine
+    Event* event_temp = new Event(artist_temp, location, date, ticket_price, isEventVIP, available_tix);
 
     // need to add event to event_list
     addEvent(*event_temp);
@@ -116,14 +132,19 @@ void Artist::createEvent(Event* event) {
 }
 
 
+// actual string constructor
+//Event(Artist* artist, Location* location, const std::string& date, double price,
+//    bool isVIP, int available_tickets)
+//
+
 // creates user of type artist using constructor
-const string Artist::createArtist(const string& username, const string& password,
+void Artist::createArtist(const string& username, const string& password,
                                   const string& name, const string& style,
-                                  const string& description) {
+                                  const string& description,  Platform& platform) {
 
     User* artist = new Artist(username, password, name, style, description);
 
-    addUser(*artist);
+    platform.addUser(artist);
 
     cout << "User of type ARTIST created" << endl;
 
@@ -167,7 +188,7 @@ const string Artist::defineArtistBio() {
 
 }
 
-void Artist::modifyEvent(Event* event) {
+void Artist::modifyEvent(Event* event, Platform& platform) {
 
     // can modify: location, date, price, isVIP, available_tickets
 
@@ -188,72 +209,46 @@ void Artist::modifyEvent(Event* event) {
         cout << "Enter new location of the event: " << endl;
         getline(cin, new_location);
 
-        event->setLocation(new_location);
+        event->setEventLocation(new_location, platform);
+        // location is a pointer to an actual location object that holds properties address, isavailable ... etc.
+
         }
 
         case 2: {
             string new_date;
             cout << "Enter new date of the event: " << endl;
-
+            getline(cin, new_date);
+            event->setDate(new_date);
 
         }
         case 3: {
 
             double new_price;
             cout << "Enter new ticket price: " << endl;
+            cin >> new_price;
+            event->setPrice(new_price);
 
         }
         case 4: {
             bool VIP_change;
-            cout << "Is the event now VIP only? " << endl;
+            cout << "Is the event now VIP only? (Y / N)" << endl;
+            // function to check input and then set if VIP or not
 
         }
         case 5: {
             int new_tix_available;
             cout << "Change number of available tickets to: " << endl;
             cin >> new_tix_available;
+            event->setAvailableTickets(new_tix_available);
             // update tix availabel function like set_tix available called on specific event
         }
 
     }
 
-
     return;
 }
 
-// get/set location
-// get/set date
+string Artist::getName() {
+    return this->name;
+}
 
-// ///////// from header ////////////////////
-// class Event;
-
-// class Artist : public User {
-// private:
-//     std::string name;
-//     std::string style;
-//     std::string description;
-
-//     // List of upcoming events ( vector of Event type )
-//     std::vector<Event*> upcoming_events;
-
-// public:
-//     // Empty constructor
-//     Artist();
-
-//     // Constructor
-//     Artist(const std::string& username, const std::string& password,
-//            const std::string& name, const std::string& style,
-//            const std::string& description);
-
-//     // Event management -- assumes event ID or some way of identifying events
-//     void createEvent(Event* event);
-//     void modifyEvent(Event* event);
-
-
-//     void deleteEvent(Event* event);
-
-//     // Artist update to their own profile
-//     void updateDescription(const std::string& new_description);
-
-//     void updateStyle(const std::string new_style);
-// };

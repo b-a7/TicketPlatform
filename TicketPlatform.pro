@@ -12,6 +12,7 @@ SOURCES += \
         event.cpp \
         location.cpp \
         main.cpp \
+        platform.cpp \
         ticket.cpp \
         user.cpp
 

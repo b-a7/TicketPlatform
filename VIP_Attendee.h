@@ -3,6 +3,7 @@
 
 #include "user.h"
 #include "attendee.h"
+#include "platform.h"
 
 class Attendee;
 class Ticket;
@@ -15,10 +16,11 @@ private:
 
 public:
 
+    VIP_attendee();
+
     // Consutrctor -- given VIP ID to distinguish between them and normal attendees
     VIP_attendee(const std::string& username, const std::string& passsword,
                  const std::string& VIP_ID, double initial_funds = 0.0);
-
 
     ~VIP_attendee();
 
@@ -28,9 +30,12 @@ public:
     void sellVIPticket();
 
     void createVIPAttendee(const std::string& username, const std::string& passsword,
-                           const std::string& VIP_ID );
+                           const std::string& VIP_ID, Platform& platform );
 
-    const std::string createVIPID();
+    const std::string createVIPID(Platform& platform);
+
+    std::string getType() const override { return "VIP_Attendee"; }
+
 
 };
 

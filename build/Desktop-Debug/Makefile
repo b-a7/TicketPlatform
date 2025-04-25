@@ -60,6 +60,7 @@ SOURCES       = ../../SecondaryMarket.cpp \
 		../../event.cpp \
 		../../location.cpp \
 		../../main.cpp \
+		../../platform.cpp \
 		../../ticket.cpp \
 		../../user.cpp 
 OBJECTS       = SecondaryMarket.o \
@@ -70,6 +71,7 @@ OBJECTS       = SecondaryMarket.o \
 		event.o \
 		location.o \
 		main.o \
+		platform.o \
 		ticket.o \
 		user.o
 DIST          = ../../README.md \
@@ -447,6 +449,7 @@ DIST          = ../../README.md \
 		../../event.cpp \
 		../../location.cpp \
 		../../main.cpp \
+		../../platform.cpp \
 		../../ticket.cpp \
 		../../user.cpp
 QMAKE_TARGET  = TicketPlatform
@@ -1237,11 +1240,7 @@ compiler_clean:
 
 ####### Compile
 
-SecondaryMarket.o: ../../SecondaryMarket.cpp ../../SecondaryMarket.h \
-		../../ticket.h \
-		../../VIP_attendee.h \
-		../../user.h \
-		../../attendee.h
+SecondaryMarket.o: ../../SecondaryMarket.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SecondaryMarket.o ../../SecondaryMarket.cpp
 
 VIP_Attendee.o: ../../VIP_Attendee.cpp ../../VIP_Attendee.h \
@@ -1257,25 +1256,36 @@ administrator.o: ../../administrator.cpp ../../administrator.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o administrator.o ../../administrator.cpp
 
 artist.o: ../../artist.cpp ../../artist.h \
-		../../user.h
+		../../user.h \
+		../../event.h \
+		../../location.h \
+		../../attendee.h \
+		../../platform.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o artist.o ../../artist.cpp
 
 attendee.o: ../../attendee.cpp ../../attendee.h \
 		../../user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o attendee.o ../../attendee.cpp
 
-event.o: ../../event.cpp 
+event.o: ../../event.cpp ../../event.h \
+		../../artist.h \
+		../../user.h \
+		../../location.h \
+		../../attendee.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o event.o ../../event.cpp
 
-location.o: ../../location.cpp ../../location.h \
-		../../user.h \
-		../../attendee.h \
-		../../event.h \
-		../../artist.h
+location.o: ../../location.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o location.o ../../location.cpp
 
 main.o: ../../main.cpp ../../user.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
+
+platform.o: ../../platform.cpp ../../platform.h \
+		../../user.h \
+		../../artist.h \
+		../../location.h \
+		../../attendee.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o platform.o ../../platform.cpp
 
 ticket.o: ../../ticket.cpp ../../ticket.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ticket.o ../../ticket.cpp

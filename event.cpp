@@ -44,7 +44,38 @@ string Event::getEventName() const
     return event_name;
 }
 
-// void Event::setLocation(const string& new_location) {
+//** this will have to go to the location objects attribute location_name
+const string Event::getLocation() const {
+
+    return this->location->getLocationName();
+}
+
+
+
+// void Event::setLocation(const string new_location) {
 //     this->location = new_location;
 // }
+
+void Event::setEventLocation(const string new_location, Platform& platform) {
+
+    this->location = platform.findLocationByName(new_location);
+}
+
+
+Location* findLocationByName(const std::string& name);
+
+
+void Event::setDate(const std::string new_date) {
+    this->date = new_date;
+}
+
+void Event::setPrice(double price) {
+    this->price = price;
+}
+
+void Event::setAvailableTickets(int tickets_available) {
+    this->available_tickets = tickets_available;
+}
+
+
 

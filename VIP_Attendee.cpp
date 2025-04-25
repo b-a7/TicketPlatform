@@ -6,17 +6,24 @@ using namespace std;
 vector<Ticket*> VIP_attendee::SecondaryMarket;
 
 
+VIP_attendee::VIP_attendee() {
+    // Empty constructor, no special initialization
+}
+
 VIP_attendee::VIP_attendee(const std::string& username, const std::string& password,
                            const std::string& VIP_ID, double initial_funds)
-    : Attendee(username, password, VIP_ID)
+    : Attendee(username, password, VIP_ID, initial_funds)
 {
     this->ID = VIP_ID;
 }
+
+//     : Attendee(username, password, VIP_ID), funds(initial_funds) // Initialize base class and funds
 
 
 VIP_attendee::~VIP_attendee() {
 
 }
+
 void VIP_attendee::buyVIPticket() {
     return;
 }
@@ -27,19 +34,19 @@ void VIP_attendee::sellVIPticket() {
 
 
 void VIP_attendee::createVIPAttendee(const string& username, const string& password,
-                                     const string& VIP_ID ) {
+                                     const string& VIP_ID, Platform& platform) {
 
     User* VIP_attendee1 = new VIP_attendee(username, password, VIP_ID);
 
-    addUser(*VIP_attendee1);
+    platform.addUser(VIP_attendee1);
 
     cout << "User of type VIP Attendee created" << endl;
 
 }
 
-const string VIP_attendee::createVIPID() {
+const string VIP_attendee::createVIPID(Platform& platform) {
 
-    string VIP_ID = "VIP-" + to_string(getNumUsers());
+    string VIP_ID = "VIP-" + to_string(platform.getNumUsers());
 
     //cout << VIP_ID << endl;
 

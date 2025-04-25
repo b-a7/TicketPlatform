@@ -2,10 +2,16 @@
 #define ARTIST_H
 
 #include "user.h"
+#include "platform.h"
 
 class Event;
+class Administrator;
 
 class Artist : public User {
+    friend class Administrator;
+    friend class Event;
+
+
 private:
     std::string name;
     std::string style;
@@ -30,11 +36,11 @@ public:
 
     void deleteEvent(Event& event);
 
-    void displayInfo();
+    //void displayInfo();
 
     // Event management -- assumes event ID or some way of identifying events
-    void createEvent(Event* event);
-    void modifyEvent(Event* event);
+    void createEvent(Platform& platform);
+    void modifyEvent(Event* event, Platform& platform);
 
 
     // Artist update to their own profile
@@ -43,13 +49,17 @@ public:
 
     //void displayInfo() const;
 
-    const std::string createArtist(const std::string& username, const std::string& password,
+    void createArtist(const std::string& username, const std::string& password,
                                       const std::string& name, const std::string& style,
-                                      const std::string& description);
+                                      const std::string& description, Platform& platform);
+
     const std::string defineArtistName();
     const std::string defineArtistStyle();
     const std::string defineArtistBio();
 
+    std::string getName();
+
+    std::string getType() const override { return "Artist"; }
 
 };
 

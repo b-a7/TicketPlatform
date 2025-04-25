@@ -21,7 +21,6 @@ public:
     // display ticket
     void displayTicket() const;
 
-
 };
 
 
