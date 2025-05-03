@@ -37,14 +37,17 @@ public:
     // getter for wallet amount, returns wallet value, this is like 'displaywallet'
     double getWallet() const;
 
+    std::string getType() const override { return "Attendee"; }
+
+    std::string getID() { return ID; }
+
     //std::string getType() const override {return "Attendee";}
 
-    void createAttendee(const std::string& username, const std::string& password,
-                                  const std::string& ID,  Platform& platform);
+    void createAttendee(Platform& platform);
 
     const std::string createAttendeeID(Platform& platform);
 
-    std::string getType() const override { return "Attendee"; }
+
 
 
 };

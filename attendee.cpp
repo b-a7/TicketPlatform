@@ -46,8 +46,17 @@ double Attendee::getWallet() const {
     return this->wallet;
 }
 
-void Attendee::createAttendee(const string& username, const string& password,
-                              const string& ID, Platform& platform) {
+// method which asks user for attendee info then creates attendee using constructor and adds to user_list
+void Attendee::createAttendee(Platform& platform) {
+
+    string username, password;
+
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+
+    string ID = createAttendeeID(platform);
 
     User* attendee = new Attendee(username, password, ID);
 
@@ -61,7 +70,7 @@ const string Attendee::createAttendeeID(Platform& platform) {
 
     string ID = to_string(platform.getNumUsers());
 
-    cout << "Test ID: " << ID << endl;
+    //cout << "Test ID: " << ID << endl;
 
     return ID;
 }

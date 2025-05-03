@@ -1,6 +1,11 @@
 To do:
 
+Platform
+*[ ]*   should we check for duplicate usernames?
+
 Artist:
+
+*[ ]* add event list to each artist
 
 [1] Implementation of the required functionality in each class to 
 display the users, events, and locations available in the program (using polymorphism
@@ -10,11 +15,14 @@ so that regular attendees can only see non-VIP events, while VIP attendees can s
 [ ] display events
 [ ] display locations available
 
-[2] modifyEvent(), method implementation
+[ ] modifyEvent(), method implementation
 
-[3] to delete events: we need artist to give name, date
+[ ] to delete events: we need artist to give name, date
 
 Administrator:
+
+[ ] modify_user method
+[ ] delete_user method
 
 Event:
 

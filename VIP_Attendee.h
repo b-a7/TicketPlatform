@@ -29,8 +29,7 @@ public:
 
     void sellVIPticket();
 
-    void createVIPAttendee(const std::string& username, const std::string& passsword,
-                           const std::string& VIP_ID, Platform& platform );
+    void createVIPAttendee(Platform& platform );
 
     const std::string createVIPID(Platform& platform);
 

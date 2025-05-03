@@ -33,8 +33,17 @@ void VIP_attendee::sellVIPticket() {
 }
 
 
-void VIP_attendee::createVIPAttendee(const string& username, const string& password,
-                                     const string& VIP_ID, Platform& platform) {
+void VIP_attendee::createVIPAttendee(Platform& platform) {
+
+
+    string username, password;
+    cout << "Enter username: ";
+    cin >>  username;
+
+    cout << "Enter password: ";
+    cin >> password;
+
+    string VIP_ID = createVIPID(platform);
 
     User* VIP_attendee1 = new VIP_attendee(username, password, VIP_ID);
 

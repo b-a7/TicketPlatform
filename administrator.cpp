@@ -21,7 +21,14 @@ Administrator::Administrator(const string& username, const string& password) {
 
        2) new user added to the end of the users vector
     */
-void Administrator::createAdmin(const string& username, const string& password, Platform& platform) {
+void Administrator::createAdmin(Platform& platform) {
+
+    string username, password;
+    cout << "Enter username: ";
+    cin >>  username;
+
+    cout << "Enter password: ";
+    cin >> password;
 
     User* admin = new Administrator(username, password);
 
@@ -62,13 +69,13 @@ void Administrator::create_user(Platform& platform) {
 
             if (isVIP == 1) {
                 // VIP attendee
-                string VIP_ID;
+                //string VIP_ID;
 
                 // creating empty VIP_attendee object (temp) to fill in fields for
                 VIP_attendee VIP_attendee_temp;
 
-                VIP_ID = VIP_attendee_temp.createVIPID(platform);
-                VIP_attendee_temp.createVIPAttendee(username, password, VIP_ID, platform);
+                //VIP_ID = VIP_attendee_temp.createVIPID(platform);
+                VIP_attendee_temp.createVIPAttendee(platform);
                 cout << "This worked, password" << endl;
             }
 
@@ -77,8 +84,10 @@ void Administrator::create_user(Platform& platform) {
                 string ID;
                 Attendee attendee_temp;
                 ID = attendee_temp.createAttendeeID(platform);
-                attendee_temp.createAttendee(username, password, ID, platform);
-                // or can make freind class and use create attendee normally, or modify the already made attendee object with info given
+
+                // *** username/password/ID removed here because they are all handled within createAttendee
+                attendee_temp.createAttendee(platform);
+                // or can make friend class and use create attendee normally, or modify the already made attendee object with info given
                  }
             break;
         }
@@ -89,16 +98,18 @@ void Administrator::create_user(Platform& platform) {
 
             Artist artist1;
 
-            name = artist1.defineArtistName();
-            style = artist1.defineArtistStyle();
-            description = artist1.defineArtistBio();        // -- change to just set this new artist object with given fields instead of create new object
+            //name = artist1.defineArtistName();
+            //style = artist1.defineArtistStyle();
+            //description = artist1.defineArtistBio();        // -- change to just set this new artist object with given fields instead of create new object
 
             // use of undeclared 'defineartistname' -- how can this be fixed --> can I use 'friend class'
             // name = defineArtistName();
             //style = defineArtistStyle();
             //description 3= defineArtistBio();
 
-            artist1.createArtist(username, password, name, style, description, platform);
+            //artist1.createArtist(username, password, name, style, description, platform);
+            artist1.createArtist(platform);
+
 
             break;
         }
@@ -106,7 +117,7 @@ void Administrator::create_user(Platform& platform) {
             // CASE admin
         case 3: {
 
-            createAdmin(username, password, platform);
+            createAdmin(platform);
 
             break;
         }

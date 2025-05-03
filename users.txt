@@ -1,0 +1,2 @@
+Attendee,Billybob123,james1232,0,0
+Attendee,billaaaayyys,123,1,0

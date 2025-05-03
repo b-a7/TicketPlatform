@@ -49,9 +49,7 @@ public:
 
     //void displayInfo() const;
 
-    void createArtist(const std::string& username, const std::string& password,
-                                      const std::string& name, const std::string& style,
-                                      const std::string& description, Platform& platform);
+    void createArtist(Platform& platform);
 
     const std::string defineArtistName();
     const std::string defineArtistStyle();
@@ -60,6 +58,10 @@ public:
     std::string getName();
 
     std::string getType() const override { return "Artist"; }
+
+    std::string getStyle();
+
+    std::string getDescription() { return description; }
 
 };
 

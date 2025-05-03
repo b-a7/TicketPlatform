@@ -7,6 +7,9 @@
 #include "user.h"
 #include "VIP_Attendee.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+
 
 using namespace std;
 
@@ -88,66 +91,229 @@ void Platform::displayAvailableLocations() {
     }
 }
 
+//void Platform::displayEvents() {}
 
 
 //bool is_available(const std::string& date) const;
 
 
+// write user to file in proper csv format
+void Platform::saveUserstoFile(const string& filename) {
+
+    // ofs represents 'output file stream'
+    ofstream ofs(filename, ios::out);
+
+    if (!ofs) {
+        throw runtime_error("Error saving to file: " + filename);
+        return;
+    }
+
+    for (User* user : user_list) {
+        ofs << user->getType() << ",";
+        ofs << user->getUsername() << "," << user->getPassword() << ",";
+
+        // if artist need name, style, description
+        if (Artist* artist = dynamic_cast<Artist*> (user)) {
+            ofs << artist->getName() << "," << artist->getStyle() << "," << artist->getDescription();
+        }
+
+        // ID, wallet
+        else if (Attendee* attendee = dynamic_cast<Attendee*> (user) ) {
+            ofs << attendee->getID() << "," << attendee->getWallet();
+        }
+
+        // ID, wallet
+        else if (VIP_attendee* vip_attendee = dynamic_cast<VIP_attendee*> (user) ) {
+            ofs << vip_attendee->getID() << "," << vip_attendee->getWallet();
+        }
+
+        else if (Administrator* admin = dynamic_cast<Administrator*>(user)) {
+            // No extra fields, so nothing to add
+        }
+
+        else {
+            throw runtime_error("Unknown user type: " + user->getType());
+        }
+        ofs << "\n";  // New line after each user
+
+    }
+    ofs.close();
+
+}
+
+
+// Loadusers = read data mode == ifstream
+// 1) need to get line, examine type from first word UNTIL comma , then create object, fill in data fields with info
+
+void Platform::loadUsersFromFile(const string& filename) {
+
+    ifstream ifs(filename);
+
+    if (!ifs) {
+        throw runtime_error("Cannot open file for reading: " + filename);
+    }
+
+    // clear existing users
+    for (User* user : user_list) delete user;
+    user_list.clear();
+
+
+    string line;
+    // read each line until getline finds eof
+    while (getline(ifs, line)) {
+        // Stringstream to parse line
+        stringstream ss(line);
+
+        string type, username, password;
+        // Get type up to comma
+        getline(ss, type, ',');
+        getline(ss, username, ',');
+        getline(ss, password, ',');
+
+        if (type == "Artist") {
+            string name, style, description;
+            getline(ss, name, ',');
+            getline(ss, style, ',');
+            getline(ss, description, ',');
+            // add line for event list
+            Artist* artist = new Artist(username, password, name, style, description);
+            user_list.push_back(artist);
+
+            ////**** space here for event list specific to artist
+        }
+        else if (type == "Attendee") {
+            string ID;
+            double wallet;
+            getline(ss, ID, ',');
+
+            // for double better to just map straight from ss instead of getline
+            ss >> wallet;
+            Attendee* attendee = new Attendee(username, password, ID, wallet);
+            user_list.push_back(attendee);
+        }
+        else if (type == "VIP_attendee") {
+            string VIP_ID;
+            double vip_wallet;
+            getline(ss, VIP_ID, ',');
+            ss >> vip_wallet;
+            VIP_attendee* vip_attendee = new VIP_attendee(username, password, VIP_ID, vip_wallet);
+            user_list.push_back(vip_attendee);
+        }
+        else if (type == "Administrator") {
+            Administrator* admin = new Administrator(username, password);
+            user_list.push_back(admin);
+        }
+        else {
+            throw runtime_error("Unknown user type in file: " + type);
+        }
+
+    }
+   // ifs.close();
+}
+
+// given user check their username/password against one provided by user and return true or false to proceed
+void Platform::loginPage() {
+
+    string username, password;
+    cout << "Enter username: ";
+    cin >> username;
+
+    cout << "Enter password: ";
+    cin >> password;
+
+    // check above credentials against actual user details
+
+}
 
 // Placeholder for main loop: login, create users, events, etc.
-void Platform::run() {
+int Platform::run() {
 
     // move this to main ****
     //Platform platform;
+    string initial_response, response;
 
     cout << "\n******-Welcome to the Ticket Platform-******\n\n";
+    cout << "1. Login" << endl;
+    cout << "2. Exit" << endl;
 
+    cin >> initial_response;
 
-    }
-    else {
-        cout << "What type of User are you?" << endl;
-        cout << "   1)   Attendee " << endl;
-        cout << "   2)   Artist" << endl;
-        cout << "   3)   Administrator" << endl;
-        cout << "   4)   VIP Attendee" << endl;
-        cout << "Enter selection (1-4): ";
-
-        cin >>
+    if (initial_response == "2" || initial_response == "2.") {
+        return 1;
     }
 
+    cout << "Do you have an account? (Y / N) " << endl;
+    cin >> response;
 
+    loadUsersFromFile("users.txt");
     while (1) {
 
-        if (initial_response == 'y' or "Y") {
+        if (response == "y" || response == "Y") {
+            cout << "What type of User are you?" << endl;
+            cout << "   1)   Attendee " << endl;
+            cout << "   2)   Artist" << endl;
+            cout << "   3)   Administrator" << endl;
+            cout << "   4)   VIP Attendee" << endl;
+            cout << "Enter selection (1-4): ";
+
 
         }
+        else if (response == "N" || response == "n") {
+            cout << "What type of user do you want to create?" << endl;
+            cout << "   1)   Attendee " << endl;
+            cout << "   2)   Artist" << endl;
+            cout << "   3)   Administrator" << endl;
+            cout << "   4)   VIP Attendee" << endl;
+            cout << "Enter selection (1-4): ";
+
+            string response2;
+            cin >> response2;
+
+            if (response2 == "1") {
+                Attendee attendee_temp;
+
+                // *** username/password/ID removed here because they are all handled within createAttendee
+                attendee_temp.createAttendee(*this);
+                saveUserstoFile("users.txt");
+                displayUsers();
+                return 0;
+            }
+        }
+
+
+
+
     }
 
 
-    Artist artist;
-    Administrator admin;
 
-    Location* arena1 = new Location();
-    arena1->setLocationName("Johnys location");
-    locations.push_back(arena1);
+// original testing WORKING
+   //  Artist artist;
+   //  Administrator admin;
 
-    // Location arena2;
-    // locations.push_back(&arena2);
+   //  Location* arena1 = new Location();
+   //  arena1->setLocationName("Johnys location");
+   //  locations.push_back(arena1);
 
-   // if (user) user_list.push_back(user);
+   //  // Location arena2;
+   //  // locations.push_back(&arena2);
+
+   // // if (user) user_list.push_back(user);
 
 
-    // add to location vector
+   //  // add to location vector
 
-    artist.createArtist("Jerry11", "abc", "Jerry", "Classical", "once upon a time", *this);
+   //  artist.createArtist("Jerry11", "abc", "Jerry", "Classical", "once upon a time", *this);
 
-    //displayUsers();
+   //  this->saveUserstoFile("users.txt"); // Saves to ./users.txt
 
-    //admin.create_user(*this);
+   //  //displayUsers();
 
-    displayUsers();
+   //  //admin.create_user(*this);
 
-    displayAvailableLocations();
+   //  displayUsers();
+
+   //  displayAvailableLocations();
 
 }
 

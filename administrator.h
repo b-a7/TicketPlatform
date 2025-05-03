@@ -29,7 +29,7 @@ public:
     // delete user provided username
     void deleteUser(User* user);
 
-    void createAdmin(const std::string& username, const std::string& password, Platform& platform);
+    void createAdmin(Platform& platform);
 
     std::string getType() const override { return "Administrator"; }
 

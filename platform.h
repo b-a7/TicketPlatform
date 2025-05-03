@@ -20,7 +20,7 @@ public:
     int getNumUsers() const;
     Artist* findArtistByName(const std::string& name);
     Location* findLocationByName(const std::string& name);
-    void run();
+    int run();
 
     void displayUsers();
 
@@ -28,6 +28,13 @@ public:
 
     // what is availabe location? -- location at a set date is free
     // check if at certain date the location isavailable
+
+    void saveUserstoFile(const std::string& filename);
+
+    void loadUsersFromFile(const std::string& filename);
+
+    void loginPage();
+
 
 };
 

@@ -138,9 +138,18 @@ void Artist::createEvent(Platform& platform) {
 //
 
 // creates user of type artist using constructor
-void Artist::createArtist(const string& username, const string& password,
-                                  const string& name, const string& style,
-                                  const string& description,  Platform& platform) {
+void Artist::createArtist(Platform& platform) {
+
+    string username, password;
+    cout << "Enter username: ";
+    cin >>  username;
+
+    cout << "Enter password: ";
+    cin >> password;
+
+    string name = defineArtistName();
+    string style = defineArtistStyle();
+    string description = defineArtistBio();
 
     User* artist = new Artist(username, password, name, style, description);
 
@@ -251,4 +260,9 @@ void Artist::modifyEvent(Event* event, Platform& platform) {
 string Artist::getName() {
     return this->name;
 }
+
+string Artist::getStyle() {
+    return this->style;
+}
+
 
