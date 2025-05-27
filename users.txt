@@ -1,2 +1,8 @@
-Attendee,Billybob123,james1232,0,0
+Attendee,Bill123,james1232,0,0
 Attendee,billaaaayyys,123,1,0
+Attendee,Bill,a,2,0
+Attendee,Mer,Pop,3,0
+Attendee,james,1234,4,200.56
+Artist,willt,abc,will,iconic,very funny
+Administrator,ADMIN,123,
+Attendee,billy2,123,7,0

@@ -46,6 +46,7 @@ public:
     // Artist update to their own profile
     void updateDescription(const std::string& new_description);
     void updateStyle(const std::string new_style);
+    void updateName(const std::string new_name);
 
     //void displayInfo() const;
 
@@ -62,6 +63,12 @@ public:
     std::string getStyle();
 
     std::string getDescription() { return description; }
+
+    void artistDashboard(Platform& platform);
+
+    void updateFeatures(Platform& platform);
+
+
 
 };
 

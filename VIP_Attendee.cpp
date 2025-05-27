@@ -49,7 +49,7 @@ void VIP_attendee::createVIPAttendee(Platform& platform) {
 
     platform.addUser(VIP_attendee1);
 
-    cout << "User of type VIP Attendee created" << endl;
+    cout << "User of type VIP ATTENDEE created" << endl;
 
 }
 

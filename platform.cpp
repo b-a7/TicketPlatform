@@ -64,14 +64,32 @@ Location* Platform::findLocationByName(const std::string& name) {
 
 void Platform::displayUsers() {
 
-    cout << "Current Users: " << endl;
+    cout << "\n---- Current Users ----" << endl;
 
     for (size_t i = 0; i < user_list.size(); i++) {
 
-        // display user type
-        cout << user_list[i]->getType() << endl;
+        User* user = user_list[i];
+        cout << "[" << i << "] " << user->getType() << endl;
+        cout << "    Username: " << user->getUsername() << endl;
+
+        if (Artist* artist = dynamic_cast<Artist*>(user)) {
+            cout << "    Style: " << artist->getStyle() << endl;
+            cout << "    Bio: " << artist->getDescription() << endl;
+        }
+        else if (VIP_attendee* vip = dynamic_cast<VIP_attendee*>(user)) {
+            cout << "    VIP ID: " << vip->getID() << endl;
+            cout << "    Wallet: $" << vip->getWallet() << endl;
+        }
+        else if (Attendee* attendee = dynamic_cast<Attendee*>(user)) {
+            cout << "    ID: " << attendee->getID() << endl;
+            cout << "    Wallet: $" << attendee->getWallet() << endl;
+        }
+
+        // // display user type
+        // cout << user_list[i]->getType() << endl;
 
         // display user info
+        cout << endl;
     }
 
 }
@@ -161,7 +179,8 @@ void Platform::loadUsersFromFile(const string& filename) {
     string line;
     // read each line until getline finds eof
     while (getline(ifs, line)) {
-        // Stringstream to parse line
+
+        // Stringstream to parse line acts as internal buffer
         stringstream ss(line);
 
         string type, username, password;
@@ -221,7 +240,33 @@ void Platform::loginPage() {
     cout << "Enter password: ";
     cin >> password;
 
+    for (User* user : user_list) {
+
+        if (user->getUsername() == username && user->getPassword() == password) {
+            cout << "Login successful as " << user->getType() << endl;
+
+            if (Administrator* administrator = dynamic_cast<Administrator*>(user)) {
+                administrator->adminDashboard(*this);
+            }
+
+            if (Artist* artist = dynamic_cast<Artist*>(user)) {
+                artist->artistDashboard(*this);
+            }
+
+            if (Attendee* attendee = dynamic_cast<Attendee*>(user)) {
+                attendee->attendeeDashboard(*this);
+            }
+
+            if (VIP_attendee* attendee = dynamic_cast<VIP_attendee*>(user)) {
+                //VIP_attendee->VIP_Dashboard(this*);
+            }
+            return;
+        }
+    }
     // check above credentials against actual user details
+    cout << "\n!!!!!!!!!!!!!!!!!!!!!!\n";
+    cout << "Login failed!" << endl;
+    cout << "\n!!!!!!!!!!!!!!!!!!!!!!";
 
 }
 
@@ -230,61 +275,129 @@ int Platform::run() {
 
     // move this to main ****
     //Platform platform;
-    string initial_response, response;
+    // string initial_response, response;
 
-    cout << "\n******-Welcome to the Ticket Platform-******\n\n";
-    cout << "1. Login" << endl;
-    cout << "2. Exit" << endl;
-
-    cin >> initial_response;
-
-    if (initial_response == "2" || initial_response == "2.") {
-        return 1;
-    }
-
-    cout << "Do you have an account? (Y / N) " << endl;
-    cin >> response;
 
     loadUsersFromFile("users.txt");
-    while (1) {
+    while (true) {
 
-        if (response == "y" || response == "Y") {
-            cout << "What type of User are you?" << endl;
-            cout << "   1)   Attendee " << endl;
-            cout << "   2)   Artist" << endl;
-            cout << "   3)   Administrator" << endl;
-            cout << "   4)   VIP Attendee" << endl;
-            cout << "Enter selection (1-4): ";
+        string choice;
+        cout << "\n******-Welcome to the Ticket Platform-******\n\n";
+        cout << "1. Login" << endl;
+        cout << "2. Create New User" << endl;
 
+        cout << "0. Exit" << endl;
 
+        cin >> choice;
+
+        if (choice == "0") {
+            saveUserstoFile("users.txt");
+            return 0;
         }
-        else if (response == "N" || response == "n") {
-            cout << "What type of user do you want to create?" << endl;
-            cout << "   1)   Attendee " << endl;
-            cout << "   2)   Artist" << endl;
-            cout << "   3)   Administrator" << endl;
-            cout << "   4)   VIP Attendee" << endl;
-            cout << "Enter selection (1-4): ";
 
-            string response2;
-            cin >> response2;
+        else if (choice == "1") {
 
-            if (response2 == "1") {
-                Attendee attendee_temp;
+            loginPage();
+        }
 
-                // *** username/password/ID removed here because they are all handled within createAttendee
-                attendee_temp.createAttendee(*this);
-                saveUserstoFile("users.txt");
-                displayUsers();
-                return 0;
+        else if (choice == "2") {
+
+            // distinguishes what user is to be created, creates and saves to user_list, and also SAVES to FILE
+            //handle_user_creation();
+
+            User* newUser = handle_user_creation();
+            if (newUser) {
+                if (Attendee* attendee = dynamic_cast<Attendee*>(newUser)) {
+                    attendee->attendeeDashboard(*this);
+                }
+                else if (Artist* artist = dynamic_cast<Artist*>(newUser)) {
+                    artist->artistDashboard(*this);
+                }
+                else if (Administrator* admin = dynamic_cast<Administrator*>(newUser)) {
+                    admin->adminDashboard(*this);
+                }
+                else if (VIP_attendee* vip = dynamic_cast<VIP_attendee*>(newUser)) {
+                    vip->attendeeDashboard(*this); // use same as Attendee
+                }
             }
         }
+            // ******bring to relevant user dashboard screens ******
 
 
+        }
 
 
     }
 
+
+
+
+
+// Return created user to route directly to their dashboard
+User* Platform::handle_user_creation() {
+
+    while (true) {
+
+        cout << "\nWhat type of user do you want to create?" << endl;
+        cout << "-" << endl;
+        cout << "   1)   Attendee " << endl;
+        cout << "   2)   Artist" << endl;
+        cout << "   3)   Administrator" << endl;
+        cout << "   4)   VIP Attendee" << endl;
+
+        cout << " \n  (0)   Return Back" << endl;
+        cout << "-" << endl;
+        cout << "Enter selection (1-4): ";
+
+        string response;
+        cin >> response;
+
+        if (response == "1") {
+            Attendee attendee_temp;
+
+            // *** username/password/ID removed here because they are all handled within createAttendee
+            attendee_temp.createAttendee(*this);
+            saveUserstoFile("users.txt");
+            displayUsers();
+            break;
+        }
+
+        else if (response == "2") {
+            Artist artist_temp;
+
+            artist_temp.createArtist(*this);
+            saveUserstoFile("users.txt");
+            displayUsers();
+            break;
+        }
+
+        else if (response == "3") {
+            Administrator admin_temp;
+
+            admin_temp.createAdmin(*this);
+            saveUserstoFile("users.txt");
+            displayUsers();
+            break;
+        }
+
+        else if (response == "4") {
+            VIP_attendee VIP_temp;
+
+            VIP_temp.createVIPAttendee(*this);
+            saveUserstoFile("users.txt");
+            displayUsers();
+            break;
+        }
+
+        else if (response == "0") {
+            break;
+        }
+
+        else {
+            cout << "Invalid selection. Please select a number from 0-4." << endl;
+        }
+    }
+}
 
 
 // original testing WORKING
@@ -315,7 +428,7 @@ int Platform::run() {
 
    //  displayAvailableLocations();
 
-}
+
 
 
 

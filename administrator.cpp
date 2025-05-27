@@ -3,13 +3,14 @@
 #include "attendee.h"
 #include "VIP_Attendee.h"
 
+#include <limits>
 #include <iostream>
 
 class VIP_attendee;
 
 using namespace std;
 
-Administrator::Administrator() {};
+Administrator::Administrator() {}
 
 Administrator::Administrator(const string& username, const string& password) {
     this->username = username;
@@ -45,18 +46,20 @@ void Administrator::create_user(Platform& platform) {
     int user_type;
     int isVIP;
 
-    cout << "What type of User do you want to create?" << endl;
+    cout << "\nWhat type of User do you want to create?" << endl;
+    cout << "--------------------------" << endl;
     cout << "   1)   Attendee " << endl;
     cout << "   2)   Artist" << endl;
     cout << "   3)   Administrator" << endl;
+    cout << "--------------------------" << endl;
     cout << "Enter selection (1-3): ";
 
     cin >> user_type;
 
-    cout << "Enter username: " << endl;
-    cin >> username;
-    cout << "Enter password: " << endl;
-    cin >> password;
+    // cout << "Enter username: " << endl;
+    // cin >> username;
+    // cout << "Enter password: " << endl;
+    // cin >> password;
 
     switch(user_type) {
 
@@ -68,13 +71,10 @@ void Administrator::create_user(Platform& platform) {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');    // Clears remaining characters (like a newline) in  input buffer aftr reading int
 
             if (isVIP == 1) {
-                // VIP attendee
-                //string VIP_ID;
 
                 // creating empty VIP_attendee object (temp) to fill in fields for
                 VIP_attendee VIP_attendee_temp;
 
-                //VIP_ID = VIP_attendee_temp.createVIPID(platform);
                 VIP_attendee_temp.createVIPAttendee(platform);
                 cout << "This worked, password" << endl;
             }
@@ -94,23 +94,11 @@ void Administrator::create_user(Platform& platform) {
 
         // CASE artist
         case 2: {
-            string name, style, description;
 
+            // Temporary and empty artist object to call create upon
             Artist artist1;
 
-            //name = artist1.defineArtistName();
-            //style = artist1.defineArtistStyle();
-            //description = artist1.defineArtistBio();        // -- change to just set this new artist object with given fields instead of create new object
-
-            // use of undeclared 'defineartistname' -- how can this be fixed --> can I use 'friend class'
-            // name = defineArtistName();
-            //style = defineArtistStyle();
-            //description 3= defineArtistBio();
-
-            //artist1.createArtist(username, password, name, style, description, platform);
             artist1.createArtist(platform);
-
-
             break;
         }
 
@@ -126,12 +114,172 @@ void Administrator::create_user(Platform& platform) {
 
 
 // modify user can just override specific fields of a user with given info
-void modifyUser(User* user) {
-    return;
+void Administrator::modifyUser(Platform& platform) {
+
+    string username;
+    cout << "\nEnter the username of the user you want to delete: ";
+    cin >> username;
+
+    for (User* user : platform.user_list) {
+        if (user->getUsername() == username) {
+            cout << "User found. " << endl;
+
+            bool done = false;
+
+            while (!done) {
+
+                cout << "\nWhat would you like to modify?\n";
+                cout << "--------------------------" << endl;
+                cout << "1. Password" << endl;
+
+                // check if user is type Artist by dynamic cast test (which returns true if cast is complete
+                if (Artist* artist = dynamic_cast<Artist*>(user)) {
+                    cout << "2. Name" << endl;
+                    cout << "3. Musical Style" << endl;
+                    cout << "4. Artist description" << endl;
+                }
+
+                cout << "0. Exit" << endl;
+                cout << "Choice: ";
+                int choice;
+                cin >> choice;
+
+                switch (choice) {
+                    case 1: {
+
+                        string newPassword;
+                        cout << "Enter new password: ";
+                        cin >> newPassword;
+                        user->setPassword(newPassword);
+                        cout << "Password updated " << endl;
+                        break;
+                    }
+                    case 2: {
+
+                        if (Artist* artist = dynamic_cast<Artist*>(user)) {
+                            string newStyle;
+                            cout << "Enter new style: ";
+
+
+                            getline(cin, newStyle);
+                            artist->updateStyle(newStyle);
+                            cout << "Style Updated" << endl;
+                        }
+
+                        else {
+                            // *** error here
+                        }
+                        break;
+                    }
+                    case 3: {
+
+                        if (Artist* artist = dynamic_cast<Artist*>(user)) {
+                            string newDescription;
+                            cout << "Enter new description: ";
+
+                            // flush newline before getline
+                            cin.ignore();
+                            getline(cin, newDescription);
+                            cout << "Description updated." << endl;
+                        }
+                        break;
+
+                    }
+                    case 0:
+                        done = true;
+                        break;
+
+                    default:
+                        cout << "Invalid choice. " << endl;
+                        break;
+
+                }
+            }
+
+            return;
+
+        }
+    }
+}
+
+
+// delete user provided username
+void Administrator::deleteUser(Platform& platform) {
+
+    string username;
+    cout << "\nEnter the username of the user you want to delete: ";
+    cin >> username;
+
+    for (auto it = platform.user_list.begin(); it != platform.user_list.end(); ++it) {
+        if ((*it)->getUsername() == username) {
+            delete *it;
+            platform.user_list.erase(it);
+            cout << "User <" << username << "> deleted successfully" << endl;
+            return;     // break immediately from iterator loop after deletion
+        }
+    }
+
+    cout << "\n!!!!!\n" << endl;
+    cout << "User not found" << endl;
+    cout << "\n!!!!!\n" << endl;
 
 }
 
-// delete user provided username
-void deleteUser(User* user) {
-    return;
+void Administrator::adminDashboard(Platform& platform) {
+
+    // admin can create, modify, delete user
+
+    while (true) {
+
+        int choice;
+        cout << "\n--------------------------" << endl;
+        cout << "Administrator Menu -- select an option: " << endl;
+        cout << "--------------------------" << endl;
+        cout << "   1)   Create User " << endl;
+        cout << "   2)   Modify User" << endl;
+        cout << "   3)   Delete User" << endl;
+        cout << "   4)   View all Users" << endl;
+
+
+        cout << " \n  (0)   Return Back" << endl;
+        cout << "--------------------------" << endl;
+        cout << "Enter selection (0-4)): ";
+
+        cin >> choice;
+
+        // cin.fail() is for if int is provided instead of string, if so, fail() returns TRUE
+        if (cin.fail()) {
+            cin.clear();
+            // Flushes the input buffer: clears any leftover characters (e.g., newline) to prevent input issues
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
+
+        if (choice == 1) {
+            create_user(platform);
+        }
+
+        else if (choice == 2) {
+            modifyUser(platform);
+        }
+
+        else if (choice == 3) {
+            deleteUser(platform);
+        }
+
+        else if (choice == 4) {
+            // displayUsers function
+            platform.displayUsers();
+        }
+
+        else if (choice == 0) {
+            break;
+        }
+
+        else {
+            cout << "Invalid input! Enter selection (0-4)" << endl;
+        }
+    }
+
 }

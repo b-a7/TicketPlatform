@@ -1,7 +1,6 @@
 #ifndef ADMINISTRATOR_H
 #define ADMINISTRATOR_H
 #include "user.h"
-#include "platform.h"
 
 #include <string>
 
@@ -24,16 +23,16 @@ public:
     void create_user(Platform& platform);
 
     // modify will be a clear, and then rewrite for a specific user
-    void modifyUser(User* user);
+    void modifyUser(Platform& platform);
 
     // delete user provided username
-    void deleteUser(User* user);
+    void deleteUser(Platform& platform);
 
     void createAdmin(Platform& platform);
 
     std::string getType() const override { return "Administrator"; }
 
-
+    void adminDashboard(Platform& platform);
 
 };
 

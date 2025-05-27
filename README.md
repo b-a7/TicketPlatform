@@ -1,7 +1,11 @@
 To do:
 
-Platform
-*[ ]*   should we check for duplicate usernames?
+NEW:
+- need to manage events and figure this all out within artist
+- View ticket, buy ticket, all attendee actions
+- when new user created they need to be directed to dashboard screens
+
+
 
 Artist:
 

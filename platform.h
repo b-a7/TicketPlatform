@@ -8,6 +8,8 @@ class Artist;
 class Location;
 
 class Platform {
+    friend class Administrator;
+
 private:
     std::vector<User*> user_list;
     std::vector<Location*> locations;
@@ -35,6 +37,7 @@ public:
 
     void loginPage();
 
+    User* handle_user_creation();
 
 };
 

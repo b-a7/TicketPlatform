@@ -47,6 +47,8 @@ public:
 
     const std::string createAttendeeID(Platform& platform);
 
+    void attendeeDashboard(Platform& platform);
+
 
 
 

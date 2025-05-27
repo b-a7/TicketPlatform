@@ -44,6 +44,9 @@ public:
         // gets type of user, redefined within each sub class
     virtual std::string getType() const;       // returns to user what type of USER they are
 
+
+    void setPassword(const std::string& newPassword);
+
     // receives reference to user object and adds this to current list
     // void addUser(User& user);
 

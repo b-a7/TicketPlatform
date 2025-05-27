@@ -55,6 +55,11 @@ std::string User::getType() const {
     return "User";
 }
 
+void User::setPassword(const string& newPassword) {
+
+    this->password = newPassword;
+}
+
 
 
 // // receives reference to user object and adds this to current list

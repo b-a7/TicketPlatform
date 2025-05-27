@@ -74,6 +74,10 @@ void Artist::updateStyle(const string new_style) {
     this->style = new_style;
 }
 
+void Artist::updateName(const std::string new_name) {
+    this->name = new_name;
+}
+
 void Artist::createEvent(Platform& platform) {
 
     // needs to ask user for input, storing in temporary variables, and then fill in Event constructor with this information
@@ -264,5 +268,129 @@ string Artist::getName() {
 string Artist::getStyle() {
     return this->style;
 }
+
+void Artist::updateFeatures(Platform& platform) {
+
+    bool done = false;
+
+    while (!done) {
+
+        cout << "\n*************************" << endl;
+        cout << "Update Artist Features Menu -- select an option: " << endl;
+        cout << "*************************" << endl;
+        cout << "   1)   Update Name" << endl;
+        cout << "   2)   Update Style" << endl;
+        cout << "   3)   Update Description" << endl;
+
+        cout << " \n  (0)   Return Back" << endl;
+        cout << "*************************" << endl;
+        cout << "Enter selection (0-3)): ";
+
+        int choice;
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
+
+        if (choice == 1) {
+            string new_name;
+            cout << "\nEnter new name: ";
+            cin >> new_name;
+            this->updateName(new_name);
+            cout << "\nName successfully updated" << endl;
+
+        }
+        else if (choice == 2) {
+            string new_style;
+            cout << "\nEnter new style: ";
+            cin >> new_style;
+            this->updateName(new_style);
+            cout << "\nStyle successfully updated" << endl;
+
+        }
+        else if (choice == 3) {
+            string new_description;
+            cout << "\nEnter new description: ";
+            cin >> new_description;
+            this->updateName(new_description);
+            cout << "\nDescription successfully updated" << endl;
+
+        }
+        else if (choice == 0) {
+            break;
+        }
+
+        else {
+            cout << "Invalid input! Enter selection (0-4)" << endl;
+        }
+
+    }
+}
+
+void Artist::artistDashboard(Platform& platform) {
+
+    bool done = false;
+
+    while (!done) {
+
+        cout << "\n--------------------------" << endl;
+        cout << "Artist Menu -- select an option: " << endl;
+        cout << "--------------------------" << endl;
+        cout << "   1)   Create Event" << endl;
+        cout << "   2)   Modify Event" << endl;
+        cout << "   3)   Delete Event" << endl;
+        cout << "   4)   Update Features" << endl;
+
+
+        cout << " \n  (0)   Return Back" << endl;
+        cout << "--------------------------" << endl;
+        cout << "Enter selection (0-4)): ";
+
+        int choice;
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
+
+        if (choice == 1) {
+            createEvent(platform);
+        }
+
+        else if (choice == 2) {
+            //***to do
+
+            //modifyEvent(platform);
+        }
+
+        else if (choice == 3) {
+            //***to do
+
+        }
+
+        else if (choice == 4) {
+            updateFeatures(platform);
+        }
+
+        else if (choice == 0) {
+            break;
+        }
+
+        else {
+            cout << "Invalid input! Enter selection (0-4)" << endl;
+        }
+
+    }
+
+
+}
+
 
 
